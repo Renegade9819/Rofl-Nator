@@ -15,6 +15,7 @@ It's just a little project I made in order to learn Flask and how to use python 
 
 * TensorFlow 2.0, install guide [here](https://www.tensorflow.org/install/pip)
 * MTCNN Model `pip install mtcnn`
+* Python OpenCv `pip install opencv-python`
 
 ## Demo
 ![](https://media.giphy.com/media/JqDbSmI5cgQBaK2j95/giphy.gif)
