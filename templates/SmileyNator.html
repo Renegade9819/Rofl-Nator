@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Rofl-Nator</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',    filename='css/style.css') }}">
+	<script type="text/javascript" src="{{ url_for('static',    filename='js/main.js') }}"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<div id="header">
+		<div id="heading"> <img src="{{ url_for('static',    filename='res/lol_70px.png') }}" id="logo">Rofl-Nator</div>
+	</div>
+	<h6 id="userImg">Upload your image: &nbsp
+		<form action="/getImage" method="post" enctype="multipart/form-data">
+			<input type="file" name="file">
+			<input type="submit" value="Upload">
+		</form>
+	</h6>
+	<div id="Img">
+		<img src="{{ user_image }}">
+	</div>
+</body>
+</html>
+
