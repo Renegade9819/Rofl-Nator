@@ -1,20 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from mtcnn.mtcnn import MTCNN
-from matplotlib import pyplot
-import warnings
 from cv2 import imread
 from PIL import Image, ImageDraw, ImageFilter
 import os
-import time
-
-
 
 app = Flask(__name__)
 
-imagePath = ''
-def setPath(path):
-    imagePath = path
 
 EMOJI_FOLDER = os.path.join('static', 'res')
 
@@ -30,8 +22,7 @@ app.config['RESULTS_FOLDER'] = IMAGE_FOLDER
 emojiPath = os.path.join(app.config['RES_FOLDER'], 'emoji.png')
 im2 = Image.open(emojiPath)
 
-pixels = imread(imagePath)
-
+# Initialize the detector
 detector = MTCNN()
 
 @app.route('/')
@@ -52,14 +43,17 @@ def saveImg():
 
         faces = detector.detect_faces(pixels)
 
+        # Get the result of detection
         for result in faces:
             x, y, width, height = result['box']
 
+            # We take the width and the height of the area of the detected face to resize our emoji.png according to the size of the face.
             size = (width + 40), (height + 40)
             im2.thumbnail(size)
             im2.save(os.path.join(app.config['RES_FOLDER'], 'resize.png'), quality=100)
             im3 = Image.open(os.path.join(app.config['RES_FOLDER'], 'resize.png'))
             im1.paste(im3, (x-15, y-5), im3)
+            
 
         im1.save(os.path.join(app.config['RESULTS_FOLDER'], 'result.png'), quality=100)
 
@@ -67,8 +61,9 @@ def saveImg():
         result_path = os.path.join(app.config['RESULTS_FOLDER'], 'result.png')
         
         return render_template('SmileyNator.html', user_image = result_path)
-
-
+    
+    
+# Browser Cache interferers with displaying the result image on the website, so we tell the browser to not cache our page.    
 @app.after_request
 def add_header(response):
     """
